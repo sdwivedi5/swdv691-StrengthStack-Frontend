@@ -21,6 +21,17 @@ Instructions on how to set up the frontend (e.g., install dependencies, run the 
 
 Description of the main directories and components.
 
+StrengthStack-Frontend/
+├── README.md
+├── docs/             # Frontend design docs 
+├── src/              # Source code (React, etc.)
+│   ├── components/
+│   ├── pages/
+│   ├── App.js
+│   └── index.js
+├── package.json
+└── .gitignore
+
 ## Contributing
 
 Guidelines for contributing.
