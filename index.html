@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+ <html lang="en">
+ 
+
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StrengthStack Login</title>
+  <link rel="stylesheet" href="css/styles.css">
+ </head>
+ 
+
+ <body>
+  <div class="container">
+  <h1>StrengthStack Login</h1>
+  <form id="login-form">
+  <label for="username">Username:</label><br>
+  <input type="text" id="username" name="username" required><br><br>
+  <label for="password">Password:</label><br>
+  <input type="password" id="password" name="password" required><br><br>
+  <button type="submit">Login</button>
+  </form>
+  <div id="login-message"></div>
+  </div>
+ 
+
+  <script src="js/common.js"></script>
+  <script>
+  const loginForm = document.getElementById('login-form');
+  const loginMessage = document.getElementById('login-message');
+ 
+
+  loginForm.addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent default form submission
+ 
+
+  const username = loginForm.username.value;
+  const password = loginForm.password.value;
+ 
+
+  try {
+  const response = await fetch('/users', {
+  method: 'POST', //  You might want a separate /login route
+  headers: {
+  'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ username, password })
+  });
+ 
+
+  if (response.ok) {
+  const data = await response.json();
+  //  Assuming the server returns user data on successful login
+  loginMessage.textContent = 'Login Successful!';
+  window.location.href = `/frontend/users.html?id=${data.userid}`; //  Redirect to user details
+  } else {
+  loginMessage.textContent = 'Login Failed.';
+  }
+  } catch (error) {
+  console.error('Login error:', error);
+  loginMessage.textContent = 'Login error.';
+  }
+  });
+  </script>
+ </body>
+ 
+
+ </html>
