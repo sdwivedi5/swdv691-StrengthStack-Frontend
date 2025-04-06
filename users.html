@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+ <html lang="en">
+ 
+
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Details</title>
+  <link rel="stylesheet" href="css/styles.css">
+ </head>
+ 
+
+ <body>
+  <div class="container">
+  <h1>User Details</h1>
+  <div id="user-details">
+  </div>
+  <button id="edit-user">Edit User</button>
+  <div id="edit-form" style="display: none;">
+  <h2>Edit User</h2>
+  <form id="update-user-form">
+  <label for="edit-username">Username:</label><br>
+  <input type="text" id="edit-username" name="username" required><br><br>
+  <label for="edit-email">Email:</label><br>
+  <input type="email" id="edit-email" name="email" required><br><br>
+  <label for="edit-trainingLevel">Training Level:</label><br>
+  <input type="text" id="edit-trainingLevel" name="trainingLevel" required><br><br>
+  <label for="edit-goals">Goals:</label><br>
+  <input type="text" id="edit-goals" name="goals" required><br><br>
+  <button type="submit">Update User</button>
+  </form>
+  </div>
+  <button id="delete-user">Delete User</button>
+  <button onclick="window.location.href='/frontend/index.html'">Back to Login</button>
+  </div>
+ 
+
+  <script src="js/common.js"></script>
+  <script src="js/users.js"></script>
+<script>
+   // Insert navigation
+   fetch('nav.html')
+     .then(response => response.text())
+     .then(navHtml => {
+       document.querySelector('header').innerHTML = navHtml;
+     })
+     .catch(error => console.error('Error loading nav:', error));
+ </script>
+ </body>
+ 
+
+ </html>
