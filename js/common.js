@@ -1,4 +1,4 @@
-//  frontend/js/common.js (Helper functions)
+//  js/common.js (Helper functions)
  
 
  //  A basic function to handle common fetch errors and JSON parsing

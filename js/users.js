@@ -1,4 +1,4 @@
-//  Get user ID from URL
+// Get user ID from URL
  const urlParams = new URLSearchParams(window.location.search);
  const userId = urlParams.get('id');
  
@@ -10,14 +10,23 @@
  const deleteButton = document.getElementById('delete-user');
  
 
- //  Fetch and display user details
+ // New DOM elements for navigation
+ const navMyWorkoutsLink = document.getElementById('nav-my-workouts');
+ const navMyProgressLink = document.getElementById('nav-my-progress');
+ 
+
  async function fetchAndDisplayUser() {
+  //debugger; // Add this line
+ 
+
   try {
   const response = await fetch(`/users/${userId}`);
   if (!response.ok) {
   throw new Error(`HTTP error! Status: ${response.status}`);
   }
   const user = await response.json();
+  console.log('Fetched user data:', user); // Add this
+  //debugger; // Add this for breakpoint
   userDetailsDiv.innerHTML = `
   <h2>${user.username} Details</h2>
   <p>Email: ${user.email}</p>
@@ -26,10 +35,10 @@
   `;
  
 
-  //  Populate edit form
+  // Populate edit form
   document.getElementById('edit-username').value = user.username;
   document.getElementById('edit-email').value = user.email;
-  document.getElementById('edit-trainingLevel').value = user.traininglevel;
+  document.getElementById('edit-trainingLevel').value = user.trainingLevel;
   document.getElementById('edit-goals').value = user.goals;
   } catch (error) {
   console.error('Error fetching user details:', error);
@@ -38,13 +47,13 @@
  }
  
 
- //  Event listener for edit button
+ // Event listener for edit button
  editButton.addEventListener('click', () => {
   editFormDiv.style.display = 'block';
  });
  
 
- //  Event listener for update form submission
+ // Event listener for update form submission
  updateUserForm.addEventListener('submit', async (event) => {
   event.preventDefault();
  
@@ -68,8 +77,8 @@
  
 
   if (response.ok) {
-  fetchAndDisplayUser(); //  Refresh user details
-  editFormDiv.style.display = 'none'; //  Hide form
+  fetchAndDisplayUser(); // Refresh user details
+  editFormDiv.style.display = 'none'; // Hide form
   alert('User updated successfully!');
   } else {
   const error = await response.json();
@@ -82,7 +91,7 @@
  });
  
 
- //  Event listener for delete button
+ // Event listener for delete button
  deleteButton.addEventListener('click', async () => {
   if (confirm('Are you sure you want to delete this user?')) {
   try {
@@ -93,7 +102,7 @@
 
   if (response.ok) {
   alert('User deleted successfully!');
-  window.location.href = '/frontend/index.html'; //  Redirect to login or user list
+  window.location.href = '/index.html'; // Redirect to login or user list
   } else {
   const error = await response.json();
   alert(`Failed to delete user: ${error.message || 'Unknown error'}`);
@@ -106,5 +115,26 @@
  });
  
 
- //  Initial fetch
- fetchAndDisplayUser();
+ // Navigation event listeners
+ if (navMyWorkoutsLink) {
+  navMyWorkoutsLink.addEventListener('click', () => {
+  window.location.href = `/workouts.html?userId=${userId}&view=mine`;
+  });
+ } else {
+  console.error('Error: Element with id "nav-my-workouts" not found!');
+ }
+ 
+
+ if (navMyProgressLink) {
+  navMyProgressLink.addEventListener('click', () => {
+  window.location.href = `/progress.html?userId=${userId}&view=mine`;
+  });
+ } else {
+  console.error('Error: Element with id "nav-my-progress" not found!');
+ }
+ 
+
+ // Initial fetch
+ document.addEventListener('DOMContentLoaded', () => {
+  fetchAndDisplayUser();
+ });
