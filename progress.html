@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+ <html lang="en">
+ 
+
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Tracking</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> </head>
+ 
+
+ <body>
+  <div class="container">
+  <header>
+  </header>
+ 
+
+  <h1>Your Progress</h1>
+ 
+
+  <div class="chart-container" style="width: 80%; margin: auto;">
+  <canvas id="progressChart" width="400" height="200"></canvas>
+  </div>
+ 
+
+  <div id="progress-data">
+  </div>
+ 
+
+  <div id="message"></div>
+ 
+
+  <footer>
+  </footer>
+  </div>
+ 
+
+  <script src="js/common.js"></script>
+  <script src="js/progress.js"></script>
+  <script>
+  // Insert navigation
+  fetch('nav.html')
+  .then(response => response.text())
+  .then(navHtml => {
+  document.querySelector('header').innerHTML = navHtml;
+  })
+  .catch(error => console.error('Error loading nav:', error));
+  </script>
+ </body>
+ 
+
+ </html>

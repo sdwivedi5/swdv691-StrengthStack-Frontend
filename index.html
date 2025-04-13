@@ -52,7 +52,7 @@
   const data = await response.json();
   //  Assuming the server returns user data on successful login
   loginMessage.textContent = 'Login Successful!';
-  window.location.href = `/frontend/users.html?id=${data.userid}`; //  Redirect to user details
+  window.location.href = `/users.html?id=${data.userid}`; //  Redirect to user details
   } else {
   loginMessage.textContent = 'Login Failed.';
   }

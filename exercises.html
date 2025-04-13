@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+ <html lang="en">
+
+
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercises</title>
+  <link rel="stylesheet" href="css/styles.css">
+ </head>
+
+
+ <body>
+  <div class="container">
+  <header>
+  </header>
+
+
+  <h1>Exercises</h1>
+
+
+  <div id="exercise-list">
+  </div>
+
+
+  <h2>Add Exercise</h2>
+  <form id="add-exercise-form">
+  <label for="name">Name:</label><br>
+  <input type="text" id="name" name="name" required><br><br>
+
+
+  <label for="musclegroup">Muscle Group:</label><br>
+  <input type="text" id="musclegroup" name="musclegroup"><br><br>
+
+
+  <button type="submit">Add Exercise</button>
+  </form>
+
+
+  <h2>Edit Exercise</h2>
+  <div id="edit-exercise-form" style="display: none;">
+  <form id="edit-exercise-form-inner">
+  <label for="edit-name">Name:</label><br>
+  <input type="text" id="edit-name" name="name" required><br><br>
+
+
+  <label for="edit-musclegroup">Muscle Group:</label><br>
+  <input type="text" id="edit-musclegroup" name="musclegroup"><br><br>
+
+
+  <input type="hidden" id="edit-exerciseid" name="exerciseid">
+  <button type="submit">Update Exercise</button>
+  </form>
+  </div>
+
+
+  <button id="delete-exercise-button" style="display: none;">Delete Exercise</button>
+
+
+  <div id="message"></div>
+
+
+  <footer>
+  </footer>
+  </div>
+
+
+  <script src="js/common.js"></script>
+  <script src="js/exercises.js"></script>
+  <script>
+  // Insert navigation
+  fetch('nav.html')
+  .then(response => response.text())
+  .then(navHtml => {
+  document.querySelector('header').innerHTML = navHtml;
+  })
+  .catch(error => console.error('Error loading nav:', error));
+  </script>
+ </body>
+
+
+ </html>

@@ -5,17 +5,19 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Details</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <title>My Profile</title>
+  <link rel="stylesheet" href="/css/styles.css">
  </head>
  
 
  <body>
   <div class="container">
-  <h1>User Details</h1>
+  <header>
+  </header>
+  <h1>My Profile</h1>
   <div id="user-details">
   </div>
-  <button id="edit-user">Edit User</button>
+  <button id="edit-user">Edit Profile</button>
   <div id="edit-form" style="display: none;">
   <h2>Edit User</h2>
   <form id="update-user-form">
@@ -30,22 +32,27 @@
   <button type="submit">Update User</button>
   </form>
   </div>
-  <button id="delete-user">Delete User</button>
-  <button onclick="window.location.href='/frontend/index.html'">Back to Login</button>
+  <button id="delete-user">Delete Profile</button>
+  <button onclick="window.location.href='/index.html'">Back to Login</button>
   </div>
  
 
-  <script src="js/common.js"></script>
-  <script src="js/users.js"></script>
-<script>
-   // Insert navigation
-   fetch('nav.html')
-     .then(response => response.text())
-     .then(navHtml => {
-       document.querySelector('header').innerHTML = navHtml;
-     })
-     .catch(error => console.error('Error loading nav:', error));
- </script>
+  <script src="/js/common.js"></script>
+  <script src="/js/users.js" defer></script>
+  <script>
+  // Insert navigation
+  fetch('/nav.html')
+  .then(response => response.text())
+  .then(navHtml => {
+  const header = document.querySelector('header');
+  if (header) {
+  header.innerHTML = navHtml;
+  } else {
+  console.error('Error: <header> element not found.');
+  }
+  })
+  .catch(error => console.error('Error loading nav:', error));
+  </script>
  </body>
  
 
