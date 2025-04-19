@@ -1,41 +1,51 @@
-
-
 // frontend/js/progress.js
-
+ 
 
  // Get user ID from URL
  const urlParams = new URLSearchParams(window.location.search);
  const userId = urlParams.get('userId');
-console.log('User ID from URL:', userId); // Add this line
-
+ 
 
  // DOM elements
- const progressChartCtx = document
-  .getElementById('progressChart')
-  .getContext('2d');
+ const progressChartCtx = document.getElementById('progressChart').getContext('2d');
  const progressDataDiv = document.getElementById('progress-data');
  const messageDiv = document.getElementById('message');
-
+ const userGreetingDiv = document.getElementById('user-greeting'); // New element
+ 
 
  let progressChart; // Store chart instance globally
-
+ 
 
  // Function to fetch and display progress data
  async function fetchAndDisplayProgress() {
   try {
-  const response = await fetch(`/users/${userId}/progress`); // Adjust URL as needed
+  const response = await fetch(`progress?userId=${userId}`); // Adjust URL as needed
   if (!response.ok) {
   throw new Error(`HTTP error! Status: ${response.status}`);
   }
   const progressData = await response.json();
-
+ 
 
   if (progressData.length === 0) {
   messageDiv.textContent = 'No progress data available for this user.';
   progressDataDiv.innerHTML = '<p>No data to display.</p>';
   return;
   }
+ 
 
+  // *** Fetch user data to get username for the greeting ***
+  try {
+  const userResponse = await fetch(`/users/${userId}`);
+  if (!userResponse.ok) {
+  throw new Error(`HTTP error! Status: ${userResponse.status}`);
+  }
+  const user = await userResponse.json();
+  userGreetingDiv.textContent = `Hello ${user.username}, you have made great progress to your health. Please refer to the chart and make adjustments to your workouts.`;
+  } catch (userError) {
+  console.error('Error fetching user data for greeting:', userError);
+  userGreetingDiv.textContent = "Error loading user greeting."; //  Fallback message
+  }
+ 
 
   renderChart(progressData);
   displayProgressData(progressData);
@@ -44,19 +54,25 @@ console.log('User ID from URL:', userId); // Add this line
   messageDiv.textContent = 'Error fetching progress data.';
   }
  }
-
+ 
 
  // Function to render the chart
  function renderChart(data) {
+  if (!data || data.length === 0) {
+  console.warn('No data to render chart.');
+  return; // Exit if no data
+  }
+ 
+
   const labels = data.map(item => item.date);
   const weightData = data.map(item => item.weight);
   const oneRepMaxData = data.map(item => item.estimatedonerepmax);
-
+ 
 
   if (progressChart) {
   progressChart.destroy(); // Destroy previous chart if it exists
   }
-
+ 
 
   progressChart = new Chart(progressChartCtx, {
   type: 'line',
@@ -91,9 +107,9 @@ console.log('User ID from URL:', userId); // Add this line
   display: true,
   labelString: 'Date'
   },
-  type: 'time',  //  Ensure X-axis treats labels as dates
+  type: 'time', // Ensure X-axis treats labels as dates
   time: {
-  unit: 'month'  //  Adjust as needed (day, week, month)
+  unit: 'day' // Adjust as needed (day, week, month)
   }
   }],
   yAxes: [{
@@ -114,12 +130,12 @@ console.log('User ID from URL:', userId); // Add this line
   labelString: 'Estimated 1RM (lbs)'
   },
   gridLines: {
-  drawOnChartArea: false, //  Don't draw gridlines for this axis
+  drawOnChartArea: false // Don't draw gridlines for this axis
   }
   },
   ]
   },
-  tooltips: {  //  Customize tooltips (optional)
+  tooltips: { // Customize tooltips (optional)
   mode: 'index',
   intersect: false
   },
@@ -130,25 +146,38 @@ console.log('User ID from URL:', userId); // Add this line
   }
   });
  }
+ 
 
+function displayProgressData(data) {
+  const table = document.createElement('table');
+  const thead = table.createTHead();
+  const tbody = table.createTBody();
 
- function displayProgressData(data) {
-  let tableHTML = '<table>';
-  tableHTML += '<thead><tr><th>Date</th><th>Reps</th><th>Weight (lbs)</th><th>Estimated 1RM (lbs)</th></tr></thead><tbody>';
+  let row = thead.insertRow();
+  let cell = row.insertCell();
+  cell.textContent = 'Date';
+  cell = row.insertCell();
+  cell.textContent = 'Reps';
+  cell = row.insertCell();
+  cell.textContent = 'Weight (lbs)';
+  cell = row.insertCell();
+  cell.textContent = 'Estimated 1RM (lbs)';
+
   data.forEach(item => {
-  tableHTML += `
-  <tr>
-  <td><span class="math-inline">\{item\.date\}</td\>
-<td\></span>{item.reps}</td>
-  <td><span class="math-inline">\{item\.weight\}</td\>
-<td\></span>{item.estimatedonerepmax}</td>
-  </tr>
-  `;
+    row = tbody.insertRow();
+    cell = row.insertCell();
+    cell.textContent = item.date;
+    cell = row.insertCell();
+    cell.textContent = item.reps;
+    cell = row.insertCell();
+    cell.textContent = item.weight;
+    cell = row.insertCell();
+    cell.textContent = item.estimatedonerepmax;
   });
-  tableHTML += '</tbody></table>';
-  progressDataDiv.innerHTML = tableHTML;
- }
 
+  progressDataDiv.innerHTML = ''; // Clear previous content
+  progressDataDiv.appendChild(table);
+} 
 
  // Initial fetch and display
  fetchAndDisplayProgress();

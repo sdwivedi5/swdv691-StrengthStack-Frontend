@@ -11,15 +11,38 @@
  const messageDiv = document.getElementById('message');
  const showAddWorkoutFormButton = document.getElementById('show-add-workout-form'); // New button
  
+const exerciseSelect = document.getElementById('exerciseid');
+
+async function populateExerciseSelect() {
+    try {
+        const response = await fetch('/exercises');
+        const exercises = await handleFetchResponse(response);
+
+        exercises.forEach(exercise => {
+            const option = document.createElement('option');
+            option.value = exercise.exerciseid;
+            //option.textContent = `<span class="math-inline">\{exercise\.name\} \(</span>{exercise.musclegroup || 'N/A'})`;
+            option.textContent = `${exercise.name} (${exercise.musclegroup || 'N/A'})`;
+		exerciseSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error fetching exercises for select:', error);
+        messageDiv.textContent = "Error loading exercises.";
+    }
+}
+
+// ... inside fetchAndDisplayWorkouts or called separately ...
+populateExerciseSelect();
+
 
  // Function to fetch and display workouts
  async function fetchAndDisplayWorkouts() {
   try {
   let url = '/workouts'; // Default: Get all workouts
   if (userId && view === 'mine') {
-  url = `/users/${userId}/workouts`; // Assuming this backend route exists
+  url = `/workouts?userId=${userId}`; // Assuming this backend route exists
   } else if (userId) {
-  url = `/users/${userId}/workouts`; // Or whatever route you need
+  url = `/workouts?userId=${userId}/`; // Or whatever route you need
   }
   const response = await fetch(url);
   const workouts = await handleFetchResponse(response); // Use common error handling

@@ -13,7 +13,18 @@
  // New DOM elements for navigation
  const navMyWorkoutsLink = document.getElementById('nav-my-workouts');
  const navMyProgressLink = document.getElementById('nav-my-progress');
- 
+
+const navMyProfileLink = document.getElementById('nav-my-profile');
+
+if (navMyProfileLink) {
+  navMyProfileLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    console.log("Navigating to My Profile with userId:", userId); // ADD THIS LINE
+    window.location.href = `/users.html?id=${userId}`;
+  });
+} else {
+  console.error('Error: Element with id "nav-my-profile" not found!');
+}
 
  async function fetchAndDisplayUser() {
   //debugger; // Add this line
@@ -48,13 +59,18 @@
  
 
  // Event listener for edit button
- editButton.addEventListener('click', () => {
+ if (editButton) {
+  editButton.addEventListener('click', () => {
   editFormDiv.style.display = 'block';
- });
+  });
+ } else {
+  console.error('Error: Element with id "edit-user" not found!');
+ }
  
 
  // Event listener for update form submission
- updateUserForm.addEventListener('submit', async (event) => {
+ if (updateUserForm) {
+  updateUserForm.addEventListener('submit', async (event) => {
   event.preventDefault();
  
 
@@ -88,11 +104,15 @@
   console.error('Error updating user:', error);
   alert('Error updating user.');
   }
- });
+  });
+ } else {
+  console.error('Error: Element with id "update-user-form" not found!');
+ }
  
 
  // Event listener for delete button
- deleteButton.addEventListener('click', async () => {
+ if (deleteButton) {
+  deleteButton.addEventListener('click', async () => {
   if (confirm('Are you sure you want to delete this user?')) {
   try {
   const response = await fetch(`/users/${userId}`, {
@@ -112,29 +132,33 @@
   alert('Error deleting user.');
   }
   }
- });
- 
+  });
+ } else {
+  console.error('Error: Element with id "delete-user" not found!');
+ }
 
- // Navigation event listeners
- if (navMyWorkoutsLink) {
+
+// *** THIS IS THE CRUCIAL CHANGE ***
+ document.addEventListener('DOMContentLoaded', () => {
+  if (navMyWorkoutsLink) {
   navMyWorkoutsLink.addEventListener('click', () => {
   window.location.href = `/workouts.html?userId=${userId}&view=mine`;
   });
- } else {
+  } else {
   console.error('Error: Element with id "nav-my-workouts" not found!');
- }
- 
+  }
 
- if (navMyProgressLink) {
+
+  if (navMyProgressLink) {
   navMyProgressLink.addEventListener('click', () => {
   window.location.href = `/progress.html?userId=${userId}&view=mine`;
   });
- } else {
+  } else {
   console.error('Error: Element with id "nav-my-progress" not found!');
- }
- 
+  }
 
- // Initial fetch
- document.addEventListener('DOMContentLoaded', () => {
+	 
+
+  // Initial fetch
   fetchAndDisplayUser();
  });

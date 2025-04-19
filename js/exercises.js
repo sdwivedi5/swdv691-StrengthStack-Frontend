@@ -7,6 +7,18 @@
  const deleteExerciseButton = document.getElementById('delete-exercise-button'); // Corrected ID
  const showAddExerciseFormButton = document.getElementById('show-add-exercise-button'); // Corrected ID
  
+const navMyProfileLink = document.getElementById('nav-my-profile');
+
+if (navMyProfileLink) {
+  navMyProfileLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    console.log("Navigating to My Profile with userId:", userId); // ADD THIS LINE
+    window.location.href = `/users.html?id=${userId}`;
+  });
+} else {
+  console.error('Error: Element with id "nav-my-profile" not found!');
+}
+
 
  let editingExerciseId = null;
  
