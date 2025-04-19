@@ -34,6 +34,15 @@
   </div>
   <button id="delete-user">Delete Profile</button>
   <button onclick="window.location.href='/index.html'">Back to Login</button>
+ 
+
+  <h2>My Data</h2>
+  <nav>
+  <ul>
+  <li><a href="#" id="nav-my-workouts">My Workouts</a></li>
+  <li><a href="#" id="nav-my-progress">My Progress</a></li>
+  </ul>
+  </nav>
   </div>
  
 
@@ -41,6 +50,7 @@
   <script src="/js/users.js" defer></script>
   <script>
   // Insert navigation
+  document.addEventListener('DOMContentLoaded', () => {
   fetch('/nav.html')
   .then(response => response.text())
   .then(navHtml => {
@@ -52,6 +62,7 @@
   }
   })
   .catch(error => console.error('Error loading nav:', error));
+  });
   </script>
  </body>
  
